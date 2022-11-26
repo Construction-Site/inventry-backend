@@ -18,7 +18,7 @@ app.use(bodyParser.json());
 app.use(morgan<Request, Response>("dev"));
 
 const dbConnectionString: string = "mongodb+srv://test:test@cluster0.2xnfc.mongodb.net/?retryWrites=true&w=majority";
-const server_port = process.env.SERVER_PORT ?? "";
+const server_port = process.env.PORT 
 
 connectorDb(dbConnectionString);
 
@@ -49,7 +49,7 @@ app.use((error: any, res: Response, next: NextFunction) => {
     next(error);
   }
 });
-const port = server_port || 8000;
+const port = server_port;
 app.listen(port, () => {
   console.log(`Application started on ${port}...`);
 });
