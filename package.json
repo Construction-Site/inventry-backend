@@ -6,7 +6,7 @@
   "scripts": {
     "start": "npm run tsc && node build/app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "tsc": "tsc",
+    "tsc": "./node_modules/typescript/bin/tsc",
     "postinstall": "npm run tsc"
   },
   "author": "clay k",
