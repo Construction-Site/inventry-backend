@@ -7,7 +7,7 @@ import connectorDb from "./Helper/Dbconnector";
 import * as dotenv from "dotenv";
 import InventryRouter from "./Routes/UserRoute";
 import morgan from "morgan";
-
+import health from "./Routes/health"
 dotenv.config();
 
 app.use(helmet());
@@ -22,6 +22,7 @@ const server_port = process.env.SERVER_PORT ?? "";
 connectorDb(dbConnectionString);
 
 //user route
+app.use("/",health);
 app.use("/inventry", InventryRouter);
 
 //404 response
