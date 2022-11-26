@@ -204,3 +204,25 @@ export const updateInventry = async (
     next(error);
   }
 };
+
+export const deleteInventry = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const inventryDelelteResponse = await Inventry.findByIdAndDelete( req.params.id);
+    res.status(200).json({
+      ...inventryDelelteResponse,
+    });
+  } catch (error: any) {
+    if (error.isJoi === true) {
+      return next(
+        res.status(400).json({
+          message: "Invalid details provided.",
+        })
+      );
+    }
+    next(error);
+  }
+};

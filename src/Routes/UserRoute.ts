@@ -7,7 +7,9 @@ router.post("/", UserController.createUser);
 
 router.get("/", UserController.getUser);
 
-router.put("/:id", UserController.updateInventry)
+router.put("/:id", UserController.updateInventry);
+
+router.delete("/:id", UserController.deleteInventry);
 
 //update user
 // router.patch("/", UserController.updateUser);
