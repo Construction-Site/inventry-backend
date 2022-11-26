@@ -1,11 +1,9 @@
 import { Request, Response, NextFunction } from "express";
-import Post from "../Models/User";
 import createError from "http-errors";
-import User from "../Models/User";
-import { Iuser } from "../Types/Iuser";
+import Inventry from "../Models/Inventry";
+import { IInventry } from "../Types/IInventry";
 import {
-  UserValidation,
-  UserIdValidation,
+  InventryValidation,
 } from "../Validations/UserValidation";
 
 /**
@@ -13,42 +11,38 @@ import {
  * @param userId
  * @param userModelValidation
  */
-const processUpdateUser = async (
-  userId: String,
-  userModelValidation: Iuser
-) => {
-  try {
-    const updateUser = await User.updateOne(
-      {
-        _id: userId,
-      },
-      {
-        $set: {
-          name: userModelValidation.name,
-          surname: userModelValidation.surname,
-        },
-      }
-    );
-    return updateUser;
-  } catch (error) {
-    console.log(error);
-  }
-};
+// const processUpdateUser = async (
+//   userId: String,
+//   userModelValidation: IInventry
+// ) => {
+//   try {
+//     const updateUser = await Inventry.updateOne(
+//       {
+//         _id: userId,
+//       },
+//       {
+//         $set: {
+//           name: userModelValidation.name,
+//           surname: userModelValidation.surname,
+//         },
+//       }
+//     );
+//     return updateUser;
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
 /**
  * add new user
  * @param userModelValidation
  */
-const addUser = async (userModelValidation: Iuser) => {
+const addItem = async (userModelValidation: IInventry) => {
   try {
-    const user = new User({
-      username: userModelValidation.username,
-      name: userModelValidation.name,
-      surname: userModelValidation.surname,
-    });
+    const user = new Inventry(userModelValidation);
     const savedUser = await user.save();
-
     return savedUser;
   } catch (error) {
+    console.error(error);
     throw new createError.BadRequest("Bad request.");
   }
 };
@@ -65,29 +59,21 @@ export const createUser = async (
   next: NextFunction
 ) => {
   try {
-    const userModelValidation: Iuser = await UserValidation.validateAsync(
+    const inventryModelValidation: IInventry = await InventryValidation.validateAsync(
       req.body
     );
 
-    if (!userModelValidation) {
+    if (!inventryModelValidation) {
       return next(
         new createError.BadRequest(
           "Operation failed, invalid details provided."
         )
       );
-    } else {
-      const isUsernameAvailable = await User.findOne({
-        username: userModelValidation.username,
-      });
-      if (isUsernameAvailable) {
-        res.status(404).json({
-          message: `Username ${userModelValidation.username} not available`,
-        });
-      } else {
-        const newUser = await addUser(userModelValidation);
-        if (newUser) {
+    } else { 
+      const newItem = await addItem(inventryModelValidation);
+      if (newItem) {
           res.status(201).json({
-            newUser,
+            newItem,
           });
         } else {
           return next(
@@ -96,9 +82,8 @@ export const createUser = async (
             })
           );
         }
-      }
     }
-  } catch (error) {
+  } catch (error: any) {
     if (error.isJoi === true) {
       return next(
         res.status(400).json({
@@ -110,65 +95,65 @@ export const createUser = async (
   }
 };
 
-/**
- * Upadet user
- * @param req
- * @param res
- * @param next
- */
-export const updateUser = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const userModelValidation: Iuser = await UserValidation.validateAsync(
-      req.body
-    );
+// /**
+//  * Upadet user
+//  * @param req
+//  * @param res
+//  * @param next
+//  */
+// export const updateUser = async (
+//   req: Request,
+//   res: Response,
+//   next: NextFunction
+// ) => {
+//   try {
+//     const userModelValidation: IInventry = await InventryValidation.validateAsync(
+//       req.body
+//     );
 
-    if (!userModelValidation) {
-      return next(
-        new createError.BadRequest(
-          "Operation failed, invalid details provided."
-        )
-      );
-    } else {
-      const isUsernameValid = await User.findOne({
-        username: userModelValidation.username,
-      });
-      if (!isUsernameValid) {
-        res.status(404).json({
-          message: `Username ${userModelValidation.username} not valid`,
-        });
-      } else {
-        const updatedUser = await processUpdateUser(
-          isUsernameValid._id,
-          userModelValidation
-        );
-        if (updatedUser) {
-          res.status(201).json({
-            updatedUser,
-          });
-        } else {
-          return next(
-            res.status(400).json({
-              message: "Invalid details provided.",
-            })
-          );
-        }
-      }
-    }
-  } catch (error) {
-    if (error.isJoi === true) {
-      return next(
-        res.status(400).json({
-          message: "Invalid details provided.",
-        })
-      );
-    }
-    next(error);
-  }
-};
+//     if (!userModelValidation) {
+//       return next(
+//         new createError.BadRequest(
+//           "Operation failed, invalid details provided."
+//         )
+//       );
+//     } else {
+//       const isUsernameValid = await User.findOne({
+//         username: userModelValidation.username,
+//       });
+//       if (!isUsernameValid) {
+//         res.status(404).json({
+//           message: `Username ${userModelValidation.username} not valid`,
+//         });
+//       } else {
+//         const updatedUser = await processUpdateUser(
+//           isUsernameValid._id,
+//           userModelValidation
+//         );
+//         if (updatedUser) {
+//           res.status(201).json({
+//             updatedUser,
+//           });
+//         } else {
+//           return next(
+//             res.status(400).json({
+//               message: "Invalid details provided.",
+//             })
+//           );
+//         }
+//       }
+//     }
+//   } catch (error: any) {
+//     if (error.isJoi === true) {
+//       return next(
+//         res.status(400).json({
+//           message: "Invalid details provided.",
+//         })
+//       );
+//     }
+//     next(error);
+//   }
+// };
 
 export const getUser = async (
   req: Request,
@@ -176,29 +161,17 @@ export const getUser = async (
   next: NextFunction
 ) => {
   try {
-    const userIdValidation = await UserIdValidation.validateAsync(
-      req.params.userId
-    );
-
-    if (!userIdValidation) {
-      return next(
-        new createError.BadRequest(
-          "Operation failed, invalid details provided."
-        )
-      );
-    } else {
-      const userDetails = await User.findById(userIdValidation);
-      if (!userDetails) {
+      const inventryList = await Inventry.find({});
+    if (!inventryList) {
         res.status(404).json({
-          message: `User id not available`,
+          message: `Inventry not available`,
         });
       } else {
         res.status(200).json({
-          userDetails,
+          ...inventryList,
         });
       }
-    }
-  } catch (error) {
+  } catch (error: any) {
     if (error.isJoi === true) {
       return next(
         res.status(400).json({

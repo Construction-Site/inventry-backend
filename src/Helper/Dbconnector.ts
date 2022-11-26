@@ -6,14 +6,14 @@ import mongoose from "mongoose";
 export default (database: string) => {
   const connect = () => {
     mongoose
-      .connect(database, { useNewUrlParser: true, useUnifiedTopology: true })
-
-      .then(() => console.log(`Database connection successful.....`))
-      .catch((error) => {
-        console.log("Unable to connect to the db: " + error.message);
-        return process.exit(1);
+      .connect(encodeURI(database), { useNewUrlParser: true, useUnifiedTopology: true })
+      .then(() => {
+        console.log('Successfully connected to mongo.');
+        return 'connected mongo';
+      })
+      .catch((err) => {
+        console.log('Error connecting to mongo.', err);
       });
-    mongoose.set("useCreateIndex", true);
   };
   connect();
   mongoose.connection.on("disconnected", () => {

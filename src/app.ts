@@ -5,8 +5,7 @@ import helmet from "helmet";
 import bodyParser from "body-parser";
 import connectorDb from "./Helper/Dbconnector";
 import * as dotenv from "dotenv";
-import PostRoute from "./Routes/PostRoute";
-import UserRoute from "./Routes/UserRoute";
+import InventryRouter from "./Routes/UserRoute";
 import morgan from "morgan";
 
 dotenv.config();
@@ -17,15 +16,13 @@ app.use(bodyParser.json());
 // app.use(morgan("dev"));
 app.use(morgan<Request, Response>("dev"));
 
-const dbConnectionString: string = process.env.DB_CONNECION ?? "";
+const dbConnectionString: string = "mongodb+srv://test:test@cluster0.2xnfc.mongodb.net/?retryWrites=true&w=majority";
 const server_port = process.env.SERVER_PORT ?? "";
 
 connectorDb(dbConnectionString);
 
 //user route
-app.use("/user", UserRoute);
-//post route
-app.use("/post", PostRoute);
+app.use("/inventry", InventryRouter);
 
 //404 response
 app.use((error: any, res: Response, next: NextFunction) => {
@@ -50,7 +47,7 @@ app.use((error: any, res: Response, next: NextFunction) => {
     next(error);
   }
 });
-const port = server_port || 5000;
+const port = server_port || 8000;
 app.listen(port, () => {
   console.log(`Application started on ${port}...`);
 });

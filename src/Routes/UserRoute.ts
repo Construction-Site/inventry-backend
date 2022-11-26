@@ -5,10 +5,9 @@ import * as UserController from "../Controllers/UserController";
 //create user
 router.post("/", UserController.createUser);
 
-//get user
-router.get("/:userId", UserController.getUser);
+router.get("/", UserController.getUser);
 
 //update user
-router.patch("/", UserController.updateUser);
+// router.patch("/", UserController.updateUser);
 
 export default router;
