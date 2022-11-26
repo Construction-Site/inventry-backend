@@ -182,3 +182,25 @@ export const getUser = async (
     next(error);
   }
 };
+
+export const updateInventry = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const inventryUpdateResponse = await Inventry.findByIdAndUpdate(req.params.id,{...req.body});
+      res.status(200).json({
+        ...inventryUpdateResponse,
+      });
+  } catch (error: any) {
+    if (error.isJoi === true) {
+      return next(
+        res.status(400).json({
+          message: "Invalid details provided.",
+        })
+      );
+    }
+    next(error);
+  }
+};
