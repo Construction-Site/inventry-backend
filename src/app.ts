@@ -7,9 +7,10 @@ import connectorDb from "./Helper/Dbconnector";
 import * as dotenv from "dotenv";
 import InventryRouter from "./Routes/UserRoute";
 import morgan from "morgan";
-import health from "./Routes/health"
+import health from "./Routes/health";
+import cors from "cors";
 dotenv.config();
-
+app.use(cors())
 app.use(helmet());
 app.use(bodyParser.json());
 //morgan used for logging
