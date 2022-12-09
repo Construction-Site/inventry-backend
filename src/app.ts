@@ -5,7 +5,7 @@ import helmet from "helmet";
 import bodyParser from "body-parser";
 import connectorDb from "./Helper/Dbconnector";
 import * as dotenv from "dotenv";
-import InventryRouter from "./Routes/UserRoute";
+import InventryRouter from "./Routes/InventryRoute";
 import morgan from "morgan";
 import health from "./Routes/health";
 import cors from "cors";

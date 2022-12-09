@@ -10,4 +10,3 @@ export const InventryValidation = Joi.object({
   description: Joi.string().required(),
 });
 
-export const UserIdValidation = Joi.string().alphanum().required();
