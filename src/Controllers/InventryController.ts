@@ -2,13 +2,10 @@ import { Request, Response, NextFunction } from "express";
 import createError from "http-errors";
 import Inventry from "../Models/Inventry";
 import { IInventry } from "../Types/IInventry";
-import {
-  InventryValidation,
-} from "../Validations/InventryValidation";
 
-const addItem = async (userModelValidation: IInventry) => {
+const addItem = async (itemData: IInventry) => {
   try {
-    const user = new Inventry(userModelValidation);
+    const user = new Inventry(itemData);
     const savedUser = await user.save();
     return savedUser;
   } catch (error) {
@@ -23,18 +20,7 @@ export const createItem = async (
   next: NextFunction
 ) => {
   try {
-    const inventryModelValidation: IInventry = await InventryValidation.validateAsync(
-      req.body
-    );
-
-    if (!inventryModelValidation) {
-      return next(
-        new createError.BadRequest(
-          "Operation failed, invalid details provided."
-        )
-      );
-    } else { 
-      const newItem = await addItem(inventryModelValidation);
+      const newItem = await addItem(req.body);
       if (newItem) {
           res.status(201).json({
             newItem,
@@ -46,15 +32,7 @@ export const createItem = async (
             })
           );
         }
-    }
   } catch (error: any) {
-    if (error.isJoi === true) {
-      return next(
-        res.status(400).json({
-          message: "Invalid details provided.",
-        })
-      );
-    }
     next(error);
   }
 };

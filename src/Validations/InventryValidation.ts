@@ -8,5 +8,5 @@ export const InventryValidation = Joi.object({
   categoryId: Joi.number().required(),
   displayImage: Joi.string().required(),
   description: Joi.string().required(),
-});
+}).options({ stripUnknown: false, convert: true, abortEarly: false });
 
