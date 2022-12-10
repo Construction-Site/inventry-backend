@@ -12,7 +12,7 @@ import {
  */
 const addOrder = async (orderValidation: IOrders) => {
     try {
-        const order = new Orders(OrderValidation);
+        const order = new Orders(orderValidation);
         return order.save();
     } catch (error) {
         console.error(error);
@@ -31,39 +31,16 @@ export const createOrder = async (
     res: Response,
     next: NextFunction
 ) => {
-    try {
-        const orderModelValidation: IOrders = await OrderValidation.validateAsync(
-            req.body
-        );
+    const newOrder = await addOrder(req.body);
+    return next(newOrder);
+};
 
-        if (!orderModelValidation) {
-            return next(
-                new createError.BadRequest(
-                    "Operation failed, invalid details provided."
-                )
-            );
-        } else {
-            const newOrder = await addOrder(orderModelValidation);
-            if (newOrder) {
-                res.status(201).json({
-                    newOrder,
-                });
-            } else {
-                return next(
-                    res.status(400).json({
-                        message: "Invalid details provided.",
-                    })
-                );
-            }
-        }
-    } catch (error: any) {
-        if (error.isJoi === true) {
-            return next(
-                res.status(400).json({
-                    message: "Invalid details provided.",
-                })
-            );
-        }
-        next(error);
-    }
+export const getOrderDetails = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {   
+    const {id} = req.params;
+    const orderDetails = await Orders.findById(id);
+    return next(orderDetails);
 };
