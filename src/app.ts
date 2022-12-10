@@ -6,6 +6,7 @@ import bodyParser from "body-parser";
 import connectorDb from "./Helper/Dbconnector";
 import * as dotenv from "dotenv";
 import InventryRouter from "./Routes/InventryRoute";
+import OrderRouter from "./Routes/OrderRoute"
 import morgan from "morgan";
 import health from "./Routes/health";
 import cors from "cors";
@@ -25,13 +26,35 @@ connectorDb(dbConnectionString);
 //user route
 app.use("/",health);
 app.use("/inventry", InventryRouter);
+app.use("/order", OrderRouter);
 
 //404 response
-app.use((error: any, res: Response, next: NextFunction) => {
-  try {
-    res.status(404).send("Resource not found");
-  } catch (error) {
-    next(error);
+
+const sendResponse = (req: Request, res: Response, result: any) => {
+  const responseObject = {
+    status: 200,
+    result: {
+      statusCode: 200,
+      data: result,
+    },
+  };
+  res.status(responseObject.status);
+  res.send(responseObject.result);
+};
+
+const sendError = (req: Request, res: Response, error: any) => {
+  const result = error.getErrorObject ? error.getErrorObject() : {
+    code: 500,
+  };
+  res.status(result.code);
+  res.send(result);
+};
+
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+  if (err instanceof Error) {
+    sendError(req, res, err);
+  } else {
+    sendResponse(req, res, err);
   }
 });
 
