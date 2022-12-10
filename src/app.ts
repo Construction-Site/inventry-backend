@@ -5,7 +5,7 @@ import helmet from "helmet";
 import bodyParser from "body-parser";
 import connectorDb from "./Helper/Dbconnector";
 import * as dotenv from "dotenv";
-import InventryRouter from "./Routes/UserRoute";
+import InventryRouter from "./Routes/InventryRoute";
 import morgan from "morgan";
 import health from "./Routes/health";
 import cors from "cors";
@@ -18,7 +18,7 @@ app.use(bodyParser.json());
 app.use(morgan<Request, Response>("dev"));
 
 const dbConnectionString: string = "mongodb+srv://test:test@cluster0.2xnfc.mongodb.net/?retryWrites=true&w=majority";
-const server_port = process.env.SERVER_PORT ?? "";
+const server_port = process.env.PORT 
 
 connectorDb(dbConnectionString);
 
