@@ -1,4 +1,5 @@
 import { Client } from '@elastic/elasticsearch';
+import { DeleteByQueryRequest } from '@elastic/elasticsearch/lib/api/types';
 
 export default class Elastic {
     private client;
@@ -21,4 +22,10 @@ export default class Elastic {
     async search(options: { index: string, query: object }){
         return this.client.search(options);
     };
+    async delete(query: DeleteByQueryRequest | DeleteByQueryRequest){
+        return this.client.deleteByQuery(query);
+    }
+    async deleteIndex(index: string = 'items_v1') {
+        return this.client.indices.delete({index});
+    }
 };
