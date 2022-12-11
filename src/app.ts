@@ -15,13 +15,17 @@ import swaggerJSDoc from "swagger-jsdoc";
 const swaggerOptions = {
   swaggerDefinition: {
     openapi: '3.0.0',
-    host: `localhost:8000`,
+    host: `http://localhost:8000`,
     info: {
       title: 'Construction Site', // API title
       description: 'Construction Site API`s', // API description
       version: '1.0.0', // API version
     },
-    // basePath: 'http://localhost:8000/'//'https://lobster-app-mzqth.ondigitalocean.app/', // base path of the API
+    servers: [
+      {
+        url: 'https://lobster-app-mzqth.ondigitalocean.app/',
+      },
+    ],
   },
   apis: ["./**/*.ts"],
 };
