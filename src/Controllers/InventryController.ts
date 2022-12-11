@@ -1,8 +1,10 @@
 import { Request, Response, NextFunction } from "express";
 import createError from "http-errors";
+import Elastic from "../elatic/elastic";
 import Inventry from "../Models/Inventry";
 import { IInventry } from "../Types/IInventry";
 
+const elasticInstance = new Elastic();
 const addItem = async (itemData: IInventry) => {
   try {
     const user = new Inventry(itemData);
@@ -20,10 +22,12 @@ export const createItem = async (
   next: NextFunction
 ) => {
   try {
-      const newItem = await addItem(req.body);
-      if (newItem) {
+    console.log("CameHere");
+    const [elasticInsert, newItem] = await Promise.all([elasticInstance.insertDocs({ index: 'items_v1', document: req.body}),addItem(req.body)])
+    console.log(elasticInsert);
+    if (newItem && elasticInsert) {
           res.status(201).json({
-            newItem,
+            response: [elasticInsert, newItem],
           });
         } else {
           return next(
@@ -33,6 +37,7 @@ export const createItem = async (
           );
         }
   } catch (error: any) {
+    console.log(error);
     next(error);
   }
 };
