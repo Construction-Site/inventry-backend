@@ -5,7 +5,7 @@ export interface IInventry extends Document {
   uploaderId: number,
   price: number,
   unit: string,
-  categoryId: number,
+  categoryId: string,
   displayImage: string,
   description: string,
 }

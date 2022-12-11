@@ -44,3 +44,13 @@ export const getOrderDetails = async (
     const orderDetails = await Orders.findById(id);
     return next(orderDetails);
 };
+
+export const getCartDetails = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    const { userId } = req.params;
+    const orderDetails = await Orders.find({ userId, orderStatus: "inCart" });
+    return next(orderDetails);
+};

@@ -111,3 +111,30 @@ export const deleteItem = async (
     next(error);
   }
 };
+
+
+export const getItemDeatails = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const inventryDetails = await Inventry.findById(req.params.id);
+    if (!inventryDetails) {
+      res.status(404).json({
+        message: `Inventry not available`,
+      });
+    } else {
+      return next(inventryDetails);
+    }
+  } catch (error: any) {
+    if (error.isJoi === true) {
+      return next(
+        res.status(400).json({
+          message: "Invalid details provided.",
+        })
+      );
+    }
+    next(error);
+  }
+};
