@@ -119,14 +119,13 @@ export const getItemDeatails = async (
   next: NextFunction
 ) => {
   try {
-    console.log({ id: req.params.id })
-    const inventryList = await Inventry.findById(req.params.id);
-    if (!inventryList) {
+    const inventryDetails = await Inventry.findById(req.params.id);
+    if (!inventryDetails) {
       res.status(404).json({
         message: `Inventry not available`,
       });
     } else {
-      return next(inventryList);
+      return next(inventryDetails);
     }
   } catch (error: any) {
     if (error.isJoi === true) {
