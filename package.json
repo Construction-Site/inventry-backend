@@ -31,6 +31,12 @@
     "mongoose": "^5.11.6",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.6",
+    "swagger-jsdoc": "^6.2.5",
+    "swagger-ui-express": "^4.6.0",
     "typescript": "^4.9.3"
+  },
+  "devDependencies": {
+    "@types/swagger-jsdoc": "^6.0.1",
+    "@types/swagger-ui-express": "^4.1.3"
   }
 }
