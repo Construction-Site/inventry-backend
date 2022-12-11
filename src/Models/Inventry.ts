@@ -7,7 +7,7 @@ const InventrySchema: Schema = new Schema(
       required: true,
     },
     uploaderId: {
-      type: Number,
+      type: String,
       required: true,
     },
     price: {
@@ -19,7 +19,7 @@ const InventrySchema: Schema = new Schema(
       required: true,
     },
     categoryId: {
-      type: Number,
+      type: String,
       required: true,
     },
     displayImage: {

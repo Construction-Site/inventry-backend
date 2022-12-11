@@ -3,15 +3,15 @@ import { IOrders } from "../Types/IOrder";
 const OrderSchema: Schema = new Schema(
     {
         orderId: {
-            type: Number,
+            type: String,
             required: true,
         },
         userId: {
-            type: Number,
+            type: String,
             required: true,
         },
         itemId: {
-            type: Number,
+            type: String,
             required: true,
         },
         orderUnits: {
@@ -23,7 +23,7 @@ const OrderSchema: Schema = new Schema(
             required: true,
         },
         transactionId: {
-            type: Number,
+            type: String,
             required: true,
         }
     },

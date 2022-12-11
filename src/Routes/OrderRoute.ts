@@ -8,6 +8,7 @@ router.post("/", validateBody(OrderValidation), OrderController.createOrder);
 
 router.get("/:id", OrderController.getOrderDetails);
 
+router.get("/cart/:userId", OrderController.getCartDetails)
 // router.put("/:id", validateBody(OrderValidation), OrderController.updateOrder);
 
 // router.delete("/:id", OrderController.deleteOrder);
