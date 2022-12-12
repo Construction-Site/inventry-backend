@@ -74,4 +74,6 @@ router.put("/:id", validateBody(InventryValidation),InventryController.updateIte
 router.delete("/:id", InventryController.deleteItem);
 
 router.get("/details/:id", InventryController.getItemDeatails);
+
+router.get("/search", InventryController.search);
 export default router;

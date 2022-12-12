@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import createError from "http-errors";
-import Elastic from "../elatic/elastic";
+import Elastic from "../elastic/elastic";
 import Inventry from "../Models/Inventry";
 import { IInventry } from "../Types/IInventry";
 
@@ -137,4 +137,20 @@ export const getItemDeatails = async (
     }
     next(error);
   }
+};
+
+export const search = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+    const {q} = req.query;
+  const query = {
+    "multi_match": {
+      "query" : q,
+      "fields": ["description", "displayName"],
+    }
+  }
+  const response = await elasticInstance.search({ index: 'items_v1', query });
+  next(response.hits.hits);
 };
