@@ -149,8 +149,10 @@ export const search = async (
     "multi_match": {
       "query" : q,
       "fields": ["description", "displayName"],
+      "type": "phrase_prefix"
     }
   }
+
   const response = await elasticInstance.search({ index: 'items_v1', query });
   next(response.hits.hits);
 };
